@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F7A4D">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>দৈনিক পুষ্টি ও গৃহস্থালি বাজার সহকারী</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#F6F9F3;--card:#FFFFFF;--ink:#1D2A21;--mute:#5E6E63;--line:#DDE7DB;--pri:#1F7A4D;--pri-ink:#FFFFFF;--acc:#E8A317;--acc-bg:#FFF3D6;--warn:#C0392B;--ok-bg:#E3F3E8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121A15;--card:#1B261F;--ink:#E8F0E9;--mute:#9AAE9F;--line:#2B3A30;--pri:#3FAE78;--pri-ink:#0E1A12;--acc:#F0B63A;--acc-bg:#3A301A;--warn:#E5766A;--ok-bg:#1F3326}}
+:root[data-theme="dark"]{--bg:#121A15;--card:#1B261F;--ink:#E8F0E9;--mute:#9AAE9F;--line:#2B3A30;--pri:#3FAE78;--pri-ink:#0E1A12;--acc:#F0B63A;--acc-bg:#3A301A;--warn:#E5766A;--ok-bg:#1F3326}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri",system-ui,sans-serif;font-size:16px;line-height:1.55;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+header{padding:18px 16px 6px;max-width:640px;margin:0 auto}
+h1{font-size:19px;line-height:1.3;margin:0;font-weight:700}
+.sub{color:var(--mute);font-size:14px;margin:2px 0 0}
+main{max-width:640px;margin:0 auto;padding:8px 16px 16px}
+h2{font-size:16px;margin:16px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:15px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--pri);border-color:var(--pri);color:var(--pri-ink);font-weight:600}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.rname{font-weight:700;font-size:17px;margin:0}
+.kcal{background:var(--acc-bg);color:var(--ink);border-radius:8px;padding:2px 9px;font-size:13px;font-weight:600;white-space:nowrap}
+.have{color:var(--pri);font-size:14px;margin:4px 0 0}
+.miss{color:var(--warn);font-size:14px;margin:0}
+.full{display:inline-block;background:var(--ok-bg);color:var(--pri);border-radius:6px;padding:0 8px;font-size:13px;font-weight:600;margin-bottom:4px}
+details summary{cursor:pointer;color:var(--pri);font-weight:600;margin-top:8px}
+ol{padding-left:20px;margin:6px 0}
+.btn{border:0;background:var(--pri);color:var(--pri-ink);border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--pri);border:1.5px solid var(--pri)}
+.btn.small{padding:6px 12px;font-size:14px}
+.empty{color:var(--mute);text-align:center;padding:24px 8px}
+.bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0}
+.bar>i{display:block;height:100%;background:var(--pri);width:0;transition:width .3s}
+.bar.over>i{background:var(--warn)}
+.big{font-size:34px;font-weight:700;line-height:1.1}
+input{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.add{display:flex;gap:8px;flex-wrap:wrap}
+.add input[type=text]{flex:2 1 140px}.add input[type=number]{flex:1 1 90px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.x{background:none;border:0;color:var(--warn);font:inherit;cursor:pointer;padding:4px 8px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-size:15px;padding:10px 4px;border-radius:10px;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--pri);font-weight:700;background:var(--ok-bg)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.note{color:var(--mute);font-size:13px;margin-top:14px}
+select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0;width:100%}
+label{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.grid input{width:100%}
+.res{background:var(--ok-bg);border-radius:10px;padding:10px 12px;margin-top:12px}
+[hidden]{display:none!important}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.tile{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px;padding:18px 8px;font:inherit;font-weight:600;font-size:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px}
+.tile span{font-size:40px;line-height:1}
+.t3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.t3 .tile{padding:12px 2px;font-size:13px;position:relative}.t3 .tile span{font-size:30px}
+.tile[aria-pressed=true]{border-color:var(--acc);background:var(--acc-bg)}
+.tile i{position:absolute;top:4px;right:6px;font-style:normal;font-size:12px;background:var(--acc);color:#fff;border-radius:9px;padding:0 6px}
+.alert{background:var(--acc-bg);border-color:var(--acc)}
+.warn{color:var(--warn);font-size:13px;margin:4px 0 0}
+.cond{display:flex;align-items:center;gap:8px;margin:0;padding:6px 0;font-size:16px;color:var(--ink)}.cond input{width:20px;height:20px}
+textarea,input[type=time],input[type=file]{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+#rxSum{white-space:pre-wrap}.med{display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap}.med input[type=text]{flex:2 1 140px}.med input[type=time]{flex:1 1 100px}
+nav button{font-size:13px;padding:10px 2px}
+</style>
+</head>
+<body>
+<header>
+  <h1>দৈনিক পুষ্টি ও গৃহস্থালি বাজার সহকারী</h1>
+  <p class="sub">ঘরে যা আছে তা দিয়ে কী রাঁধবেন, আর আজ কত ক্যালোরি খেলেন</p>
+</header>
+
+<main>
+  <section id="tab-home">
+    <div class="card alert" id="alert" hidden></div>
+    <div class="tiles">
+      <button class="tile" data-t="recipe"><span>🍳</span>রেসিপি</button>
+      <button class="tile" data-t="cal"><span>🔥</span>ক্যালোরি</button>
+      <button class="tile" data-t="vit"><span>🩺</span>সুগার ও প্রেসার</button>
+      <button class="tile" data-t="rem"><span>⏰</span>রিমাইন্ডার</button>
+      <button class="tile" data-t="health"><span>💊</span>স্বাস্থ্য ও প্রেসক্রিপশন</button>
+      <button class="tile" data-t="profile"><span>👤</span>প্রোফাইল</button>
+    </div>
+  </section>
+  <section id="tab-vit" hidden>
+    <h2>আজকের মাপা</h2>
+    <div class="card">
+      <div class="grid">
+        <div><label for="vS">সুগার</label><input type="number" id="vS" inputmode="decimal" step="0.1" min="1" max="700"></div>
+        <div><label for="vU">একক</label><select id="vU"><option>mmol/L</option><option>mg/dL</option></select></div>
+      </div>
+      <label for="vW">কখন মাপলেন</label>
+      <select id="vW"><option>খালি পেটে</option><option>খাবারের পর</option><option>অন্য সময়</option></select>
+      <div class="grid">
+        <div><label for="vSy">প্রেসার (উপরের)</label><input type="number" id="vSy" inputmode="numeric" min="50" max="260"></div>
+        <div><label for="vDi">প্রেসার (নিচের)</label><input type="number" id="vDi" inputmode="numeric" min="30" max="160"></div>
+      </div>
+      <button class="btn" id="vSave" style="margin-top:14px">সংরক্ষণ করুন</button>
+    </div>
+    <h2>গত ৭ দিনের হিস্ট্রি</h2>
+    <div class="card" id="vHist"></div>
+  </section>
+  <section id="tab-recipe" hidden>
+    <h2>বিশেষ খাদ্য তালিকা</h2>
+    <div class="t3" id="dietGrid"></div>
+    <div id="dietBox"></div>
+    <h2>আজ ঘরে কী আছে?</h2>
+    <div id="rsel" class="chips"></div>
+    <div id="chips"></div>
+    <h2 id="rtitle">রেসিপি</h2>
+    <div id="results"></div>
+  </section>
+
+  <section id="tab-cal" hidden>
+    <div class="card">
+      <div class="sub">আজকের মোট ক্যালোরি</div>
+      <div class="big"><span id="total">0</span> <span style="font-size:16px;font-weight:500">/ <span id="goalTxt">2000</span> kcal</span></div>
+      <div class="bar" id="bar"><i></i></div>
+      <div class="sub" id="left"></div>
+      <div class="add" style="margin-top:10px">
+        <input type="number" id="goal" inputmode="numeric" min="800" max="6000" aria-label="দৈনিক লক্ষ্য (kcal)" placeholder="দৈনিক লক্ষ্য">
+        <button class="btn ghost small" id="setGoal">লক্ষ্য সেট করুন</button>
+      </div>
+    </div>
+    <h2>খাবার যোগ করুন</h2>
+    <div class="card">
+      <div class="add">
+        <input type="text" id="fname" placeholder="খাবারের নাম" aria-label="খাবারের নাম">
+        <input type="number" id="fkcal" inputmode="numeric" min="1" placeholder="kcal" aria-label="ক্যালোরি">
+        <button class="btn" id="addBtn">যোগ করুন</button>
+      </div>
+    </div>
+    <h2>আজ যা খেয়েছেন</h2>
+    <div class="card" id="log"></div>
+  </section>
+  <section id="tab-profile" hidden>
+    <h2>আপনার প্রোফাইল</h2>
+    <div class="card">
+      <div class="grid">
+        <div><label for="pAge">বয়স (বছর)</label><input type="number" id="pAge" inputmode="numeric" min="10" max="100"></div>
+        <div><label for="pSex">লিঙ্গ</label><select id="pSex"><option value="m">পুরুষ</option><option value="f">নারী</option></select></div>
+        <div><label for="pHf">উচ্চতা: ফুট</label><input type="number" id="pHf" inputmode="numeric" min="3" max="7"></div><div><label for="pHi">ইঞ্চি</label><input type="number" id="pHi" inputmode="decimal" min="0" max="11.5" step="0.5"></div>
+        <div><label for="pW">ওজন (কেজি)</label><input type="number" id="pW" inputmode="decimal" min="25" max="250" step="0.1"></div>
+      </div>
+      <label for="pAct">দৈনিক কর্মকাণ্ড</label>
+      <select id="pAct"><option value="1.2">কম (বসে কাজ)</option><option value="1.375">হালকা (হালকা হাঁটাচলা)</option><option value="1.55">মাঝারি (নিয়মিত পরিশ্রম বা ব্যায়াম)</option><option value="1.725">বেশি (কায়িক পরিশ্রম)</option></select>
+      <button class="btn" id="pSave" style="margin-top:14px">হিসাব করুন ও সংরক্ষণ করুন</button>
+      <div class="res" id="pRes" hidden></div>
+    </div>
+  </section>
+  <section id="tab-rem" hidden>
+    <h2>রিমাইন্ডার</h2>
+    <div class="card">
+      <div class="add">
+        <input type="time" id="rT" aria-label="সময়" value="08:00">
+        <input type="text" id="rX" list="rList" placeholder="যেমন: ঔষধ খান" aria-label="রিমাইন্ডারের লেখা">
+        <datalist id="rList"><option value="ঔষধ খান"><option value="সুগার মাপুন"><option value="প্রেসার মাপুন"><option value="পানি পান করুন"></datalist>
+        <button class="btn" id="rAdd">যোগ করুন</button>
+      </div>
+      <p class="sub" style="margin-top:8px">⚠ এটি শুধু অ্যাপ/পেজ খোলা থাকলে বাজবে। জরুরি ঔষধের জন্য ফোনের নিজস্ব অ্যালার্মও দিন।</p>
+    </div>
+    <div class="card" id="rList2"></div>
+  </section>
+  <section id="tab-health" hidden>
+    <h2>আমার রোগ (খাবারের সতর্কতার জন্য)</h2>
+    <div class="card" id="conds"></div>
+    <p class="sub">রেসিপি ট্যাবে প্রতিটি রেসিপির নিচে সাধারণ সতর্কতা দেখাবে। এটি ডাক্তারের পরামর্শের বিকল্প নয়।</p>
+    <h2>প্রেসক্রিপশন / রিপোর্টের ছবি</h2>
+    <div class="card">
+      <details style="margin-bottom:10px"><summary>AI পড়ার সেটিং (এই অ্যাপে একবার দিন)</summary>
+        <input type="password" id="akey" placeholder="API Key (Gemini: AIza.. বা AQ.. / Anthropic: sk-ant-..)" style="width:100%;margin-top:8px" autocomplete="off">
+        <button class="btn ghost small" id="aSave" style="margin-top:8px">Key সংরক্ষণ</button>
+        <p class="sub">Key শুধু আপনার ফোনে থাকবে। Gemini Key (aistudio.google.com, ফ্রি) বা Anthropic Key দুটোই চলবে। ফার্মেসি অ্যাপে যে Key দিয়েছেন সেটাই দিতে পারেন।</p></details>
+      <input type="file" id="rxFile" accept="image/*" aria-label="ছবি বাছুন">
+      <button class="btn ghost small" id="rxMan" style="margin:10px 0 0 8px">হাতে ঔষধ যোগ করুন</button>
+      <button class="btn" id="rxGo" style="margin-top:10px" disabled>AI দিয়ে পড়ুন</button>
+      <p class="sub" id="rxSt"></p>
+      <div id="rxOut" hidden>
+        <div class="res" id="rxSum"></div>
+        <h2>ঔষধ (ভুল থাকলে ঠিক করুন)</h2>
+        <div id="rxMeds"></div>
+        <label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" id="rxOk" style="width:20px;height:20px">আমি মূল ছবির সাথে মিলিয়ে দেখেছি</label>
+        <button class="btn" id="rxAdd" style="margin-top:10px">নির্বাচিতগুলো রিমাইন্ডারে যোগ করুন</button>
+      </div>
+      <p class="note">AI ভুল পড়তে পারে। ডোজ বা সময় সবসময় ডাক্তার/ফার্মাসিস্টের কথার সাথে মিলিয়ে নিন। ছবি সংরক্ষণ করা হয় না।</p>
+    </div>
+  </section>
+  <p class="note">ক্যালোরির মান আনুমানিক (এক বেলার এক জনের পরিমাণ)। লবণ, তেল, হলুদ ও মশলা ঘরে আছে ধরে নেওয়া হয়েছে। এটি চিকিৎসা পরামর্শ নয়।</p>
+</main>
+
+<nav><button id="goHome">🏠 হোম</button></nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const CATS=[
+["মাংস","🥩","গরুর মাংস,🐄,মাংস;খাসির মাংস,🐐,মাংস;ভেড়ার মাংস,🐑,মাংস;মহিষের মাংস,🐃,মাংস;মুরগি,🐔;দেশি মুরগি,🐓,মুরগি;হাঁস,🦆;কবুতর,🕊️;কোয়েল,🐦;টার্কি,🦃"],
+["মাছ","🐟","ইলিশ,🐟,মাছ;রুই,🐟,মাছ;কাতলা,🐟,মাছ;তেলাপিয়া,🐠,মাছ;পাঙাস,🐟,মাছ;শিং-মাগুর,🐟,মাছ;কই,🐟,মাছ;বোয়াল,🐟,মাছ;ট্যাংরা,🐟,মাছ;চিংড়ি,🦐;শুঁটকি,🐟"],
+["ডিম","🥚","মুরগির ডিম,🥚,ডিম;হাঁসের ডিম,🥚,ডিম;কোয়েলের ডিম,🥚,ডিম"],
+["শাক-সবজি","🥬","আলু,🥔;পেঁয়াজ,🧅;রসুন,🧄;আদা,🌿;কাঁচা মরিচ,🌶️;টমেটো,🍅;বেগুন,🍆;লাউ,🥒;কুমড়া,🎃;পটল,🥒;করলা,🥒;ফুলকপি,🥦;বাঁধাকপি,🥬;গাজর,🥕;মূলা,🌿;শসা,🥒;শিম,🌱;ঢেঁড়স,🌿;পালং শাক,🥬;লালশাক,🥬;মটরশুঁটি,🌱;ক্যাপসিকাম,🫑;মিষ্টি আলু,🍠;ভুট্টা,🌽;মাশরুম,🍄;লেবু,🍋"],
+["ডাল ও দানা","🫘","মসুর ডাল,🫘,ডাল;মুগ ডাল,🫘,ডাল;ছোলার ডাল,🫘,ডাল;খেসারি ডাল,🫘,ডাল;মাষকলাই ডাল,🫘,ডাল;ছোলা,🫘;রাজমা,🫘"],
+["চাল-আটা","🌾","চাল,🍚;আটা,🌾;ময়দা,🌾;সুজি,🌾;চিড়া,🍚;মুড়ি,🍚;সেমাই,🍜;নুডলস,🍜;পাউরুটি,🍞;ওটস,🥣"],
+["ড্রাই ফুড","🥜","খেজুর,🌴;কাজুবাদাম,🥜;কাঠবাদাম,🥜;পেস্তা,🥜;কিশমিশ,🍇;আখরোট,🌰;চিনাবাদাম,🥜;তিল,🌱;চিয়া সিড,🌱;আঞ্জির,🌴"],
+["ফল","🍎","কলা,🍌;আপেল,🍎;কমলা,🍊;আম,🥭;পেঁপে,🍈;পেয়ারা,🍐;আঙুর,🍇;তরমুজ,🍉;আনারস,🍍;ডালিম,🍎"],
+["দুধ ও দুগ্ধজাত","🥛","দুধ,🥛;দই,🥣;পনির,🧀;মাখন,🧈;ঘি,🧈;ছানা,🥛"],
+["তেল-মসলা","🧂","লবণ,🧂;হলুদ,🟡;মরিচ গুঁড়া,🌶️;জিরা,🌿;ধনিয়া,🌿;গরম মসলা,🌰;সরিষার তেল,🫒;সয়াবিন তেল,🫒;চিনি,🍬;গুড়,🍯;মধু,🍯"]
+].map(c=>({n:c[0],e:c[1],it:c[2].split(";").map(x=>{const p=x.split(",");return{n:p[0],e:p[1],c:p[2]||p[0]}})}));
+const CAN={};CATS.forEach(c=>c.it.forEach(x=>CAN[x.n]=x.c));
+let openCat=null;
+const R=[
+{n:"আলু ভর্তা",i:["আলু","পেঁয়াজ","কাঁচা মরিচ"],k:150,s:["আলু সিদ্ধ করে খোসা ছাড়ান।","চটকে কুচানো পেঁয়াজ, মরিচ, লবণ ও সরিষার তেল মাখুন।","ভাতের সাথে পরিবেশন করুন।"]},
+{n:"ডিম ভুনা",i:["ডিম","পেঁয়াজ","টমেটো"],k:220,s:["ডিম সিদ্ধ করে খোসা ছাড়ুন।","তেলে পেঁয়াজ ও টমেটো কুচি, হলুদ-মরিচ-লবণ দিয়ে কষান।","ডিম দিয়ে অল্প পানিতে ৫ মিনিট রাখুন।"]},
+{n:"ডিম-আলু তরকারি",i:["ডিম","আলু","পেঁয়াজ"],k:280,s:["সিদ্ধ ডিম হালকা ভেজে নিন।","পেঁয়াজ কষিয়ে আলুর টুকরা ও মশলা দিন।","পানি দিয়ে আলু নরম হলে ডিম দিন, ঝোল ঘন হলে নামান।"]},
+{n:"ডিম ওমলেট",i:["ডিম","পেঁয়াজ","কাঁচা মরিচ"],k:190,s:["ডিম ফেটিয়ে পেঁয়াজ, মরিচ ও লবণ মেশান।","গরম তেলে ঢেলে দুই পাশ ভেজে নিন।"]},
+{n:"মসুর ডাল",i:["ডাল","পেঁয়াজ","কাঁচা মরিচ"],k:180,s:["ডাল ধুয়ে হলুদ ও লবণ দিয়ে সিদ্ধ করুন।","ঘুঁটে নিন।","তেলে পেঁয়াজ ও শুকনো মরিচ ফোড়ন দিয়ে ডালে ঢালুন।"]},
+{n:"সবজি খিচুড়ি",i:["চাল","ডাল","আলু","পেঁয়াজ"],k:350,s:["চাল-ডাল মিশিয়ে ধুয়ে নিন।","তেলে পেঁয়াজ ও আলু নেড়ে চাল-ডাল দিন।","হলুদ, লবণ ও দ্বিগুণের বেশি পানি দিয়ে নরম হওয়া পর্যন্ত রান্না করুন।"]},
+{n:"বেগুন ভাজা",i:["বেগুন"],k:120,s:["বেগুন গোল করে কেটে লবণ-হলুদ মাখুন।","অল্প তেলে দুই পাশ বাদামি করে ভাজুন।"]},
+{n:"লাউ তরকারি",i:["লাউ","পেঁয়াজ","কাঁচা মরিচ"],k:110,s:["লাউ ছোট টুকরা করুন।","তেলে পেঁয়াজ ও মরিচ কষিয়ে লাউ, লবণ, হলুদ দিন।","ঢেকে নরম হওয়া পর্যন্ত রান্না করুন (লাউ নিজেই পানি ছাড়ে)।"]},
+{n:"মুরগির ঝোল",i:["মুরগি","আলু","পেঁয়াজ"],k:320,s:["মুরগি মশলা ও লবণ মেখে ১৫ মিনিট রাখুন।","পেঁয়াজ কষিয়ে মুরগি দিয়ে ভালো করে কষান।","আলু ও পানি দিয়ে ঢেকে সিদ্ধ করুন, ঝোল ঘন হলে নামান।"]},
+{n:"মাছের ঝোল",i:["মাছ","আলু","পেঁয়াজ","টমেটো"],k:260,s:["মাছ লবণ-হলুদ মেখে হালকা ভেজে নিন।","তেলে পেঁয়াজ, টমেটো ও মশলা কষান।","আলু ও পানি দিয়ে ফুটলে মাছ দিন, ১০ মিনিট রাখুন।"]},
+{n:"আটার রুটি (২টি)",i:["আটা"],k:200,s:["আটায় লবণ ও কুসুম গরম পানি দিয়ে খামির করুন।","গোল করে বেলে গরম তাওয়ায় দুই পাশ সেঁকুন।"]},
+{n:"মাংসের ভুনা",i:["মাংস","পেঁয়াজ","আদা","রসুন"],k:420,s:["মাংস ধুয়ে আদা-রসুন বাটা, লবণ ও মশলা মেখে রাখুন।","তেলে পেঁয়াজ বাদামি করে মাংস কষান।","অল্প পানিতে ঢেকে সিদ্ধ করুন, তেল ছাড়লে নামান।"]},
+{n:"আলু দিয়ে মাংস",i:["মাংস","আলু","পেঁয়াজ"],k:380,s:["পেঁয়াজ কষিয়ে মাংস ও মশলা দিন।","আলু ও পানি দিয়ে মাংস নরম হওয়া পর্যন্ত রান্না করুন।"]},
+{n:"মুরগির ভুনা",i:["মুরগি","পেঁয়াজ","আদা","রসুন"],k:340,s:["মুরগি মশলা মেখে রাখুন।","পেঁয়াজ-আদা-রসুন কষিয়ে মুরগি দিন।","ঢেকে অল্প আঁচে সিদ্ধ করে ঝোল ঘন করুন।"]},
+{n:"মুরগির সবজি",i:["মুরগি","গাজর","বাঁধাকপি","পেঁয়াজ"],k:290,s:["মুরগি হালকা কষিয়ে নিন।","সবজি কুচি দিয়ে লবণ-মরিচ দিন।","ঢেকে ১০ মিনিট রান্না করুন।"]},
+{n:"ইলিশ/মাছ সরষে",i:["মাছ","সরিষার তেল","কাঁচা মরিচ"],k:330,s:["মাছে সরষে বাটা, লবণ, হলুদ মাখুন।","সরিষার তেল ও মরিচ দিয়ে ঢেকে অল্প আঁচে ১০ মিনিট রাখুন।"]},
+{n:"চিংড়ি ভুনা",i:["চিংড়ি","পেঁয়াজ","টমেটো"],k:250,s:["চিংড়িতে লবণ-হলুদ মেখে হালকা ভাজুন।","পেঁয়াজ-টমেটো কষিয়ে চিংড়ি দিন, ৫ মিনিট রান্না করুন।"]},
+{n:"শুঁটকি ভর্তা",i:["শুঁটকি","পেঁয়াজ","কাঁচা মরিচ"],k:140,s:["শুঁটকি ভেজে নিন।","পেঁয়াজ, মরিচ ও তেল দিয়ে মেখে নিন।"]},
+{n:"মিশ্র সবজি",i:["গাজর","ফুলকপি","আলু"],k:130,s:["সবজি কেটে নিন।","তেলে নেড়ে লবণ-হলুদ দিন।","অল্প পানিতে নরম হওয়া পর্যন্ত রান্না করুন।"]},
+{n:"শাক ভাজি",i:["পালং শাক","লালশাক","রসুন"],k:80,s:["শাক কুচি করে ধুয়ে নিন।","তেলে রসুন ফোড়ন দিয়ে শাক ও লবণ দিন, ৫ মিনিট নাড়ুন।"]},
+{n:"করলা ভাজি",i:["করলা","পেঁয়াজ"],k:100,s:["করলা পাতলা কেটে লবণে ১০ মিনিট রাখুন, চিপে নিন।","তেলে পেঁয়াজ সহ মচমচে করে ভাজুন।"]},
+{n:"কুমড়া ভাজি",i:["কুমড়া","পেঁয়াজ"],k:90,s:["কুমড়া টুকরা করে তেলে পেঁয়াজ সহ নাড়ুন।","লবণ-হলুদ দিয়ে ঢেকে নরম করুন।"]},
+{n:"পটলের তরকারি",i:["পটল","আলু"],k:120,s:["পটল ও আলু কাটুন।","তেলে মশলা কষিয়ে সবজি ও পানি দিন, নরম হলে নামান।"]},
+{n:"ছোলা ভুনা",i:["ছোলা","পেঁয়াজ","টমেটো"],k:220,s:["ছোলা ভিজিয়ে সিদ্ধ করুন।","পেঁয়াজ-টমেটো কষিয়ে ছোলা ও মশলা দিন, ঘন করুন।"]},
+{n:"ডিম ফ্রাইড রাইস",i:["চাল","ডিম","গাজর"],k:330,s:["ভাত রান্না করে ঠান্ডা করুন।","ডিম ভেজে ভেঙে নিন, গাজর নেড়ে ভাত ও লবণ মেশান।"]},
+{n:"সুজির হালুয়া",i:["সুজি","চিনি","ঘি"],k:280,s:["ঘিয়ে সুজি বাদামি করে ভাজুন।","গরম পানি ও চিনি দিয়ে ঘন হলে নামান।"]},
+{n:"দুধ সেমাই",i:["সেমাই","দুধ","চিনি"],k:300,s:["সেমাই ভেজে নিন।","দুধ ও চিনি দিয়ে ফুটিয়ে ঘন করুন।"]},
+{n:"দই-চিড়া",i:["চিড়া","দই","কলা"],k:280,s:["চিড়া ধুয়ে ভিজিয়ে নিন।","দই, কলা ও চিনি/গুড় মিশিয়ে পরিবেশন করুন।"]},
+{n:"মুড়ি মাখা",i:["মুড়ি","পেঁয়াজ","কাঁচা মরিচ","সরিষার তেল"],k:150,s:["সবকিছু কুচি করে মুড়ির সাথে লবণ ও তেল মাখুন।"]},
+{n:"ওটস",i:["ওটস","দুধ","কলা"],k:250,s:["দুধে ওটস ৫ মিনিট ফুটান।","কলার টুকরা ও চাইলে মধু দিন।"]},
+{n:"ডিম টোস্ট",i:["পাউরুটি","ডিম"],k:250,s:["ডিম ফেটিয়ে লবণ মেশান।","পাউরুটি ডিমে ডুবিয়ে তাওয়ায় দুই পাশ সেঁকুন।"]},
+{n:"ফলের সালাদ",i:["আপেল","কলা","কমলা"],k:150,s:["ফল কেটে মিশিয়ে ঠান্ডা করে খান।"]},
+{n:"খেজুর-দুধ",i:["খেজুর","দুধ"],k:200,s:["দুধ গরম করে খেজুরের বিচি ফেলে কুচি দিন।"]},
+{n:"বাদাম-খেজুর নাস্তা",i:["খেজুর","কাঠবাদাম","কাজুবাদাম"],k:220,s:["খেজুর ও বাদাম মিশিয়ে অল্প পরিমাণে খান।"]},
+{n:"পনির ভুনা",i:["পনির","ক্যাপসিকাম","পেঁয়াজ"],k:260,s:["পনির হালকা ভেজে নিন।","পেঁয়াজ-ক্যাপসিকাম নেড়ে পনির ও মশলা মেশান।"]}
+];
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem("pushti_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("pushti_"+k,JSON.stringify(v))}catch(e){}}};
+let have=new Set(), goal=store.get("goal",2000);
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),1800)}
+
+function renderChips(){
+  const sel=$("rsel");sel.innerHTML="";
+  if(have.size){const c=document.createElement("button");c.className="btn ghost small";c.textContent="সব মুছুন ("+bn(have.size)+")";c.onclick=()=>{have.clear();renderChips();renderRecipes()};sel.appendChild(c);
+    [...have].forEach(x=>{const b=document.createElement("button");b.className="chip";b.setAttribute("aria-pressed","true");b.textContent=x+" ✕";b.onclick=()=>{have.delete(x);renderChips();renderRecipes()};sel.appendChild(b)})}
+  const box=$("chips");box.innerHTML="";const g=document.createElement("div");g.className="t3";
+  if(openCat===null){CATS.forEach((c,i)=>{const n=c.it.filter(x=>have.has(x.n)).length;const b=document.createElement("button");b.className="tile";b.setAttribute("aria-pressed",n>0);
+    b.innerHTML=`<span>${c.e}</span>${c.n}`+(n?`<i>${bn(n)}</i>`:"");b.onclick=()=>{openCat=i;renderChips()};g.appendChild(b)});box.appendChild(g)}
+  else{const c=CATS[openCat],bk=document.createElement("button");bk.className="btn ghost small";bk.textContent="← সব ক্যাটাগরি";bk.onclick=()=>{openCat=null;renderChips()};box.appendChild(bk);
+    const h=document.createElement("h2");h.textContent=c.e+" "+c.n;box.appendChild(h);
+    c.it.forEach(x=>{const b=document.createElement("button");b.className="tile";b.setAttribute("aria-pressed",have.has(x.n));b.innerHTML=`<span>${x.e}</span>${x.n}`;
+      b.onclick=()=>{have.has(x.n)?have.delete(x.n):have.add(x.n);renderChips();renderRecipes()};g.appendChild(b)});box.appendChild(g)}
+}
+function renderRecipes(){
+  const box=$("results");box.innerHTML="";const hc=new Set([...have].map(x=>CAN[x]||x));
+  if(!have.size){$("rtitle").textContent="রেসিপি";box.innerHTML='<div class="empty">উপরে ক্যাটাগরি খুলে ঘরে থাকা জিনিস বেছে নিন।</div>';return}
+  const list=R.map(r=>({r,h:r.i.filter(x=>hc.has(x)),m:r.i.filter(x=>!hc.has(x))})).filter(o=>o.h.length)
+    .sort((a,b)=>a.m.length-b.m.length||b.h.length-a.h.length);
+  $("rtitle").textContent="আপনার জন্য "+bn(list.length)+"টি রেসিপি";
+  if(!list.length){box.innerHTML='<div class="empty">এই উপাদান দিয়ে কোনো রেসিপি পাওয়া যায়নি। আরও উপাদান বেছে নিন।</div>';return}
+  list.forEach(o=>{
+    const c=document.createElement("div");c.className="card";
+    c.innerHTML=`<div class="row"><p class="rname">${o.r.n}</p><span class="kcal">${bn(o.r.k)} kcal</span></div>`+
+      (o.m.length?"":'<span class="full">সব উপাদান আছে</span>')+
+      `<p class="have">আছে: ${o.h.join(", ")}</p>`+(o.m.length?`<p class="miss">লাগবে: ${o.m.join(", ")}</p>`:"")+
+      warn(o.r)+`<details><summary>রান্নার ধাপ</summary><ol>${o.r.s.map(s=>"<li>"+s+"</li>").join("")}</ol></details>`;
+    const b=document.createElement("button");b.className="btn small";b.style.marginTop="10px";b.textContent="খেয়েছি, ক্যালোরি যোগ করুন";
+    b.onclick=()=>{addEntry(o.r.n,o.r.k);toast("যোগ হয়েছে")};c.appendChild(b);box.appendChild(c);
+  });
+}
+function entries(){return store.get("log:"+today(),[])}
+function addEntry(n,k){const e=entries();e.push({n,k});store.set("log:"+today(),e);renderCal()}
+function renderCal(){
+  const e=entries(),t=e.reduce((s,x)=>s+x.k,0);
+  $("total").textContent=bn(t);$("goalTxt").textContent=bn(goal);
+  const bar=$("bar");bar.classList.toggle("over",t>goal);bar.firstElementChild.style.width=Math.min(100,t/goal*100)+"%";
+  $("left").textContent=t>goal?bn(t-goal)+" kcal লক্ষ্যের বেশি হয়েছে":"আরও "+bn(goal-t)+" kcal বাকি";
+  const l=$("log");l.innerHTML="";
+  if(!e.length){l.innerHTML='<div class="empty">আজ এখনো কিছু যোগ করা হয়নি।</div>';return}
+  e.forEach((x,i)=>{const d=document.createElement("div");d.className="item";
+    d.innerHTML=`<span>${x.n}</span><span><b>${bn(x.k)}</b> kcal </span>`;
+    const del=document.createElement("button");del.className="x";del.textContent="মুছুন";del.setAttribute("aria-label",x.n+" মুছুন");
+    del.onclick=()=>{const a=entries();a.splice(i,1);store.set("log:"+today(),a);renderCal()};
+    d.lastChild.appendChild(del);l.appendChild(d)});
+}
+$("addBtn").onclick=()=>{
+  const n=$("fname").value.trim(),k=parseInt($("fkcal").value,10);
+  if(!n||!(k>0)){toast("খাবারের নাম ও ক্যালোরি লিখুন");return}
+  addEntry(n,k);$("fname").value="";$("fkcal").value="";toast("যোগ হয়েছে");
+};
+$("setGoal").onclick=()=>{
+  const g=parseInt($("goal").value,10);
+  if(!(g>=800&&g<=6000)){toast("৮০০ থেকে ৬০০০ এর মধ্যে লিখুন");return}
+  goal=g;store.set("goal",g);$("goal").value="";renderCal();toast("লক্ষ্য সেট হয়েছে");
+};
+const TABS=["home","recipe","cal","profile","rem","health","vit"];
+function tab(t){TABS.forEach(x=>$("tab-"+x).hidden=x!==t);document.querySelector("nav").hidden=t==="home";window.scrollTo(0,0);if(t==="vit")renderVit();if(t==="home")alertUpd()}
+$("goHome").onclick=()=>tab("home");
+document.querySelectorAll(".tile").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+function setH(h){const i=h/2.54;$("pHf").value=Math.floor(i/12);$("pHi").value=Math.round(i%12*2)/2}
+function showProfile(p){
+  const m=p.h/100,bmi=p.w/(m*m),bmr=10*p.w+6.25*p.h-5*p.a+(p.s==="m"?5:-161),tdee=Math.round(bmr*p.act/10)*10;
+  const cat=bmi<18.5?"কম ওজন":bmi<23?"স্বাভাবিক ওজন":bmi<25?"বেশি ওজনের ঝুঁকি":"স্থূলতার পর্যায়";
+  const r=$("pRes");r.hidden=false;
+  r.innerHTML=`<div>BMI: <b>${bn(bmi.toFixed(1))}</b> (${cat})</div><div>আনুমানিক দৈনিক চাহিদা: <b>${bn(tdee)} kcal</b></div><div class="sub">ডায়াবেটিস, কিডনি রোগ, গর্ভাবস্থা বা অন্য কোনো রোগ থাকলে এই হিসাব না মেনে ডাক্তারের দেওয়া সীমা মানুন।</div>`;
+  const b=document.createElement("button");b.className="btn small";b.style.marginTop="8px";b.textContent="এটি আমার দৈনিক লক্ষ্য করুন";
+  b.onclick=()=>{goal=tdee;store.set("goal",goal);renderCal();toast("লক্ষ্য সেট হয়েছে")};r.appendChild(b);
+}
+$("pSave").onclick=()=>{
+  const p={a:+$("pAge").value,s:$("pSex").value,h:(+$("pHf").value*12+ +$("pHi").value)*2.54,w:+$("pW").value,act:+$("pAct").value};
+  if(!(p.a>=10&&p.a<=100&&p.h>=100&&p.h<=220&&p.w>=25&&p.w<=250)){toast("বয়স, উচ্চতা ও ওজন সঠিকভাবে লিখুন");return}
+  store.set("profile",p);showProfile(p);
+};
+const sp=store.get("profile",null);
+if(sp){$("pAge").value=sp.a;$("pSex").value=sp.s;setH(sp.h);$("pW").value=sp.w;$("pAct").value=sp.act;showProfile(sp)}
+
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CONDS={p:"গর্ভাবস্থা",d:"ডায়াবেটিস",h:"উচ্চ রক্তচাপ",k:"কিডনি রোগ",c:"হৃদরোগ",g:"গাউট/ইউরিক এসিড"};
+let cond=store.get("cond",[]),rem=store.get("rem",[]);
+const hasAny=(r,a)=>a.some(x=>r.i.includes(x));
+function warn(r){const w=[];
+  if(cond.includes("d")&&hasAny(r,["চাল","আলু","আটা"]))w.push("ডায়াবেটিস: কার্বোহাইড্রেট বেশি, পরিমাণ অল্প রাখুন");
+  if(cond.includes("h"))w.push("উচ্চ রক্তচাপ: লবণ ও তেল কম দিন");
+  if(cond.includes("k")&&hasAny(r,["আলু","টমেটো"]))w.push("কিডনি রোগ: এতে পটাশিয়াম বেশি, ডাক্তারের সীমা মানুন");
+  if(cond.includes("k")&&hasAny(r,["ডাল","মুরগি","মাছ","ডিম"]))w.push("কিডনি রোগ: প্রোটিনের পরিমাণ ডাক্তারের নির্দেশমতো");
+  if(cond.includes("c")&&/ভাজা|ভুনা|ওমলেট/.test(r.n))w.push("হৃদরোগ: ভাজা/বেশি তেল এড়ানো ভালো");
+  if(cond.includes("g")&&hasAny(r,["ডাল","মুরগি","মাছ"]))w.push("গাউট: ডাল/মাংস/মাছ পরিমিত খান");
+  if(cond.includes("p")){if(hasAny(r,["ডিম"]))w.push("গর্ভাবস্থা: ডিম পুরো সেদ্ধ/ভালো করে রান্না করা খান");
+    if(hasAny(r,["মাংস","মুরগি","মাছ","চিংড়ি"]))w.push("গর্ভাবস্থা: মাংস-মাছ ভালো করে সিদ্ধ করে খান, কাঁচা বা আধা-সেদ্ধ নয়");
+    if(hasAny(r,["কুমড়া"])===false&&/পেঁপে/.test(r.i.join()))w.push("গর্ভাবস্থা: কাঁচা পেঁপে এড়ান")}
+  return w.map(x=>`<p class="warn">⚠ ${x}</p>`).join("")}
+function renderConds(){const b=$("conds");b.innerHTML="";Object.keys(CONDS).forEach(k=>{const l=document.createElement("label");l.className="cond";
+  l.innerHTML=`<input type="checkbox"${cond.includes(k)?" checked":""}>${CONDS[k]}`;
+  l.firstChild.onchange=e=>{cond=e.target.checked?[...cond,k]:cond.filter(x=>x!==k);store.set("cond",cond);renderRecipes()};b.appendChild(l)})}
+function renderRem(){const b=$("rList2");b.innerHTML="";
+  if(!rem.length){b.innerHTML='<div class="empty">কোনো রিমাইন্ডার নেই।</div>';return}
+  [...rem].sort((a,c)=>a.t.localeCompare(c.t)).forEach(x=>{const d=document.createElement("div");d.className="item";
+    d.innerHTML=`<span><b>${bn(x.t)}</b> ${esc(x.x)}</span>`;const del=document.createElement("button");del.className="x";del.textContent="মুছুন";
+    del.onclick=()=>{rem=rem.filter(y=>y!==x);store.set("rem",rem);renderRem()};d.appendChild(del);b.appendChild(d)})}
+function addRem(t,x){rem.push({t,x,last:""});store.set("rem",rem);renderRem()}
+$("rAdd").onclick=()=>{const t=$("rT").value,x=$("rX").value.trim();if(!t||!x){toast("সময় ও লেখা দিন");return}
+  addRem(t,x);$("rX").value="";toast("রিমাইন্ডার যোগ হয়েছে");
+  try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(e){}};
+setInterval(()=>{const n=new Date(),t=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");let ch=false;
+  rem.forEach(x=>{if(x.t===t&&x.last!==today()){x.last=today();ch=true;toast("⏰ "+x.x);try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}
+    try{if("Notification" in window&&Notification.permission==="granted")new Notification("রিমাইন্ডার",{body:x.x})}catch(e){}}});
+  if(ch)store.set("rem",rem)},15000);
+// AI পড়া
+let rxBlob=null;
+$("rxFile").onchange=async e=>{const f=e.target.files[0];rxBlob=null;$("rxGo").disabled=true;if(!f)return;
+  try{const bm=await createImageBitmap(f),k=Math.min(1,1400/Math.max(bm.width,bm.height)),c=document.createElement("canvas");c.width=bm.width*k;c.height=bm.height*k;
+    c.getContext("2d").drawImage(bm,0,0,c.width,c.height);rxBlob=await new Promise(r=>c.toBlob(r,"image/jpeg",.85));$("rxGo").disabled=false;$("rxSt").textContent="ছবি প্রস্তুত।"}
+  catch(err){$("rxSt").textContent="ছবিটি খোলা যায়নি।"}};
+$("rxGo").onclick=async()=>{
+  const sm=window.claude?await claude.use("sample"):null,key=store.get("akey","");
+  if(!sm&&!key){$("rxSt").textContent="আগে উপরে AI পড়ার সেটিং-এ API Key দিন, অথবা হাতে ঔষধ যোগ করুন।";return}
+  $("rxSt").textContent="পড়া হচ্ছে…";$("rxGo").disabled=true;
+  try{const j=await askAI(sm,key);
+    $("rxSum").textContent=j.summary||"";const m=$("rxMeds");m.innerHTML="";
+    (j.medicines||[]).forEach(x=>mkMed([x.name,x.dose].filter(Boolean).join(" "),(x.times&&x.times[0])||""));
+    if(!m.children.length)m.innerHTML='<div class="empty">কোনো ঔষধ পাওয়া যায়নি।</div>';
+    $("rxOut").hidden=false;$("rxOk").checked=false;$("rxSt").textContent="হয়েছে। নিচে মিলিয়ে দেখুন।"}
+  catch(err){$("rxSt").textContent=err&&err.code==="not_granted"?"অনুমতি দেওয়া হয়নি।":(err&&err.message==="401"?"API Key ভুল।":"পড়া যায়নি, ইন্টারনেট ও Key দেখে আবার চেষ্টা করুন।"+(err&&/^\d+$/.test(err.message)?" (কোড "+err.message+")":""))}
+  finally{$("rxGo").disabled=!rxBlob}};
+function mkMed(n,t){const r=document.createElement("div");r.className="med";
+  r.innerHTML='<input type="checkbox" checked style="width:20px;height:20px"><input type="text" placeholder="ঔষধের নাম ও মাত্রা"><input type="time">';
+  r.children[1].value=n;r.children[2].value=t;$("rxMeds").appendChild(r)}
+$("rxMan").onclick=()=>{$("rxOut").hidden=false;mkMed("","")};
+$("akey").value=store.get("akey","")?"••••••••":"";
+$("aSave").onclick=()=>{const k=$("akey").value.trim();if(k.startsWith("AIza")||k.startsWith("AQ.")||k.startsWith("sk-ant")){store.set("akey",k);$("akey").value="••••••••";toast("Key সংরক্ষিত")}else toast("সঠিক Key বসান")};
+const PROMPT="এটি প্রেসক্রিপশন বা মেডিক্যাল রিপোর্টের ছবি। শুধু ছবিতে স্পষ্ট যা লেখা আছে তা পড়ো; অনুমান কোরো না, অস্পষ্ট হলে সেটা বলো। রোগ নির্ণয় বা ডোজ বদলানোর পরামর্শ দিও না। শুধু JSON দাও, অন্য কিছু নয়: {\"summary\":\"সহজ বাংলায় বিস্তারিত বিবরণ: প্রেসক্রিপশন হলে ডাক্তারের নির্দেশ ও পরীক্ষার নাম; রিপোর্ট হলে প্রতিটি পরীক্ষার নাম, মান, একক ও রেফারেন্স রেঞ্জ (প্রতি লাইনে একটি), এবং কোনটি রেঞ্জের বাইরে তা লিখো\",\"medicines\":[{\"name\":\"ঔষধের নাম\",\"dose\":\"মাত্রা\",\"times\":[\"HH:MM\"]}]}। times শুধু তখনই দাও যখন সময় স্পষ্ট লেখা (সকাল=08:00, দুপুর=13:00, রাত=21:00), নইলে খালি তালিকা।";
+async function askAI(sm,key){
+  if(sm){const lim=await sm.limits();if(!lim||!lim.images)throw new Error("no");return sm.json(PROMPT,{images:[rxBlob],cache:false})}
+  const b64=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(rxBlob)});
+  if(key.startsWith("AIza")||key.startsWith("AQ.")){
+    const g=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",{method:"POST",headers:{"content-type":"application/json","x-goog-api-key":key},
+      body:JSON.stringify({contents:[{parts:[{inline_data:{mime_type:"image/jpeg",data:b64}},{text:PROMPT}]}],generationConfig:{responseMimeType:"application/json"}})});
+    if(!g.ok)throw new Error(g.status===401||g.status===403?"401":String(g.status));
+    const gd=await g.json(),gt=gd.candidates[0].content.parts.map(x=>x.text||"").join("");
+    return JSON.parse(gt.slice(gt.indexOf("{"),gt.lastIndexOf("}")+1))}
+  const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:"claude-sonnet-5-5",max_tokens:2000,messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64}},{type:"text",text:PROMPT}]}]})});
+  if(!r.ok)throw new Error(String(r.status));
+  const d=await r.json(),t=d.content.map(x=>x.text||"").join("");
+  return JSON.parse(t.slice(t.indexOf("{"),t.lastIndexOf("}")+1))}
+$("rxAdd").onclick=()=>{if(!$("rxOk").checked){toast("আগে ছবির সাথে মিলিয়ে টিক দিন");return}
+  let n=0;[...$("rxMeds").children].forEach(r=>{const i=r.querySelectorAll("input");if(i.length&&i[0].checked&&i[1].value.trim()&&i[2].value){addRem(i[2].value,"ঔষধ: "+i[1].value.trim());n++}});
+  toast(n?bn(n)+"টি রিমাইন্ডার যোগ হয়েছে":"সময় দিয়ে ঔষধ বাছুন")};
+// সুগার ও প্রেসার
+let vit=store.get("vit",[]);
+const dk=o=>{const d=new Date();d.setDate(d.getDate()-o);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+function todayVit(){const t=vit.filter(x=>x.d===today());return{s:t.some(x=>x.s),p:t.some(x=>x.sy)}}
+function msg(){const v=todayVit();if(v.s&&v.p)return"";return"আজকে "+(!v.s&&!v.p?"ডায়াবেটিস ও প্রেসার":!v.s?"ডায়াবেটিস":"প্রেসার")+" মেপেছেন?"}
+let spoke=false;
+function speak(){const m=msg();if(!m||!("speechSynthesis" in window))return;try{const u=new SpeechSynthesisUtterance(m);u.lang="bn-BD";u.onstart=()=>spoke=true;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function alertUpd(){const a=$("alert"),m=msg();a.hidden=false;
+  a.innerHTML=m?`<b>⚠ ${m}</b><div style="margin-top:8px;display:flex;gap:8px"><button class="btn small" id="aGo">মাপা যোগ করুন</button><button class="btn ghost small" id="aSp">🔊 শুনুন</button></div>`:"<b>✅ আজকের সুগার ও প্রেসার লেখা হয়েছে</b>";
+  if(m){$("aGo").onclick=()=>tab("vit");$("aSp").onclick=speak}}
+function renderVit(){const b=$("vHist");b.innerHTML="";const days=[0,1,2,3,4,5,6].map(dk);
+  const l=vit.filter(x=>days.includes(x.d)).sort((a,c)=>c.ts-a.ts);
+  if(!l.length){b.innerHTML='<div class="empty">গত ৭ দিনে কিছু লেখা নেই।</div>';return}
+  l.forEach(x=>{const d=document.createElement("div");d.className="item";const dt=new Date(x.ts);
+    d.innerHTML=`<span>${bn(dt.getDate()+"/"+(dt.getMonth()+1))}${x.d===today()?" (আজ)":""}<br>`+(x.s?`🩸 ${bn(x.s)} ${x.u} <small>${x.w}</small> `:"")+(x.sy?`❤ ${bn(x.sy)}/${bn(x.di)}`:"")+"</span>";
+    const del=document.createElement("button");del.className="x";del.textContent="মুছুন";del.onclick=()=>{vit=vit.filter(y=>y!==x);store.set("vit",vit);renderVit();alertUpd()};d.appendChild(del);b.appendChild(d)})}
+$("vSave").onclick=()=>{const s=+$("vS").value,sy=+$("vSy").value,di=+$("vDi").value;
+  if(!s&&!sy){toast("সুগার বা প্রেসার লিখুন");return}
+  if(sy&&!(di>0&&sy>di)){toast("প্রেসার দুটি সঠিকভাবে লিখুন");return}
+  vit.push({d:today(),ts:Date.now(),s:s||0,u:$("vU").value,w:$("vW").value,sy:sy||0,di:di||0});
+  vit=vit.filter(x=>dk(13)<=x.d||true).slice(-200);store.set("vit",vit);
+  ["vS","vSy","vDi"].forEach(i=>$(i).value="");toast("সংরক্ষিত হয়েছে");renderVit();alertUpd()};
+alertUpd();speak();
+document.addEventListener("pointerdown",()=>{if(!spoke)speak()},{once:true});
+renderConds();renderRem();
+
+const DIETS={
+p:{n:"গর্ভবতী",e:"🤰",ok:"পালং-লালশাক, ডাল, ভালো করে সেদ্ধ ডিম, ভালো করে রান্না করা মুরগি-মাছ (ছোট মাছ ভালো), পাস্তুরিত দুধ-দই, ফল, বাদাম, পর্যাপ্ত পানি।",no:"কাঁচা/আধা-সেদ্ধ ডিম-মাংস-মাছ, কাঁচা দুধ ও অপাস্তুরিত পনির, কাঁচা বা আধা-পাকা পেঁপে, বড় সামুদ্রিক মাছ, বেশি চা-কফি, রাস্তার খোলা খাবার।",tip:"দিনে ৩ বারের বদলে অল্প অল্প করে ৫–৬ বার খান। আয়রন, ফলিক অ্যাসিড ও ক্যালসিয়ামের ওষুধ ডাক্তারের দেওয়া মতো খান।"},
+d:{n:"ডায়াবেটিস",e:"🩸",ok:"ডাল, শাক-সবজি, ছোলা, ডিম, মাছ, টক দই, ওটস, লাল আটা, অল্প ভাত, আস্ত ফল পরিমিত (পেয়ারা, আপেল)।",no:"চিনি, গুড়, মিষ্টি, কোমল পানীয়, ফলের রস, বেশি ভাত-সাদা রুটি, ভাজা-পোড়া।",tip:"ছোট প্লেটে খান, নির্দিষ্ট সময়ে খান। খাবারের পর সুগার মাপার হিস্ট্রির সাথে ডাক্তারকে দেখান।"},
+h:{n:"উচ্চ রক্তচাপ",e:"❤️",ok:"তাজা শাক-সবজি, ফল, ডাল, মাছ, চর্বিহীন মুরগি, ওটস, কম চর্বির দুধ-দই। স্বাদের জন্য লেবু, রসুন, আদা।",no:"বেশি লবণ, আচার, শুঁটকি, প্যাকেট স্ন্যাকস-নুডলস, বেশি তেল-ঘি, ফাস্টফুড।",tip:"লবণ দিনে ১ চা-চামচের কম। পাতে বাড়তি লবণ নেবেন না। প্রেসার নিয়মিত মাপুন।"},
+k:{n:"কিডনি রোগ",e:"🫘",ok:"কম পটাশিয়ামের সবজি (লাউ, শসা, ঝিঙা, বাঁধাকপি, ফুলকপি), আপেল, ডিমের সাদা অংশ, কম লবণ।",no:"বেশি লবণ, প্যাকেট খাবার; ডাক্তার বললে বেশি প্রোটিন এবং পটাশিয়ামসমৃদ্ধ খাবার (কলা, আলু, টমেটো, ডাবের পানি, কমলা) সীমিত করুন।",tip:"পানি, প্রোটিন ও পটাশিয়ামের সীমা রোগের পর্যায় অনুযায়ী আলাদা। ডাক্তার বা ডায়েটিশিয়ানের দেওয়া সীমাই মানুন।"},
+c:{n:"হৃদরোগ",e:"🫀",ok:"মাছ (সপ্তাহে ২–৩ দিন), ওটস, ডাল, শাক-সবজি, ফল, অল্প বাদাম, অল্প তেলে রান্না।",no:"ভাজা-পোড়া, ঘি-মাখন-ডালডা, লাল মাংসের চর্বি, ফাস্টফুড, বেশি লবণ, ধূমপান।",tip:"সেদ্ধ, ভাপা বা কম তেলে রান্না বেছে নিন। ডাক্তারের দেওয়া ওষুধ নিয়মিত খান।"},
+g:{n:"গাউট/ইউরিক এসিড",e:"🦶",ok:"প্রচুর পানি, শাক-সবজি, ডিম, কম চর্বির দুধ-দই, ওটস, ফল (কমলা, লেবু)।",no:"কলিজা-মগজ-গুর্দা, বেশি লাল মাংস, চিংড়ি ও সামুদ্রিক মাছ, অ্যালকোহল, চিনিযুক্ত পানীয়।",tip:"দিনে ২.৫–৩ লিটার পানি খান (কিডনি রোগ না থাকলে)। ওজন নিয়ন্ত্রণে রাখুন।"}};
+const SR=[
+{g:"p",n:"পালং-ডাল",q:"পালং শাক ১ আঁটি, মসুর ডাল ১/২ কাপ, রসুন ৩ কোয়া, হলুদ ও লবণ",t:"২৫ মিনিট",k:180,x:"আয়রন ও ফোলেট",s:["ডাল ধুয়ে হলুদ-লবণ দিয়ে সিদ্ধ করুন।","পালং ভালো করে ধুয়ে কুচি করে ডালে দিন, ৫ মিনিট ফুটান।","তেলে রসুন ফোড়ন দিয়ে ঢালুন।"]},
+{g:"p",n:"ডিম-সবজি খিচুড়ি",q:"চাল ১/২ কাপ, ডাল ১/৪ কাপ, গাজর ১টি, ডিম ১টি, হলুদ-লবণ",t:"৩০ মিনিট",k:380,x:"ডিম অবশ্যই পুরো সেদ্ধ",s:["ডিম ১০ মিনিট সিদ্ধ করে কেটে রাখুন।","চাল-ডাল, গাজর, হলুদ-লবণ ও ৩ কাপ পানিতে নরম করে সিদ্ধ করুন।","ডিম মিশিয়ে গরম গরম পরিবেশন করুন।"]},
+{g:"p",n:"ছোট মাছের ঝোল",q:"ছোট মাছ ২০০ গ্রাম, আলু ১টি, টমেটো ১টি, পেঁয়াজ ১টি",t:"৩০ মিনিট",k:230,x:"ভালো করে সিদ্ধ, কাঁটা বেছে খান",s:["মাছ লবণ-হলুদ মেখে রাখুন।","পেঁয়াজ-টমেটো কষিয়ে আলু ও পানি দিন।","ফুটলে মাছ দিয়ে ১০ মিনিট ঢেকে রান্না করুন।"]},
+{g:"d",n:"সবজি-ডাল স্যুপ",q:"মুগ ডাল ১/২ কাপ, লাউ ১ কাপ, গাজর ১টি, আদা, লবণ",t:"২৫ মিনিট",k:150,x:"কম কার্বোহাইড্রেট, তন্তু বেশি",s:["ডাল ও সবজি একসাথে সিদ্ধ করুন।","আদা-লবণ দিয়ে ব্লেন্ড বা ঘুঁটে নিন।","গরম পরিবেশন করুন।"]},
+{g:"d",n:"ডিম-সবজি ভুনা",q:"ডিম ২টি, পেঁয়াজ ১টি, টমেটো ১টি, ক্যাপসিকাম ১/২, ১ চা-চামচ তেল",t:"১৫ মিনিট",k:200,x:"কম তেলে রান্না",s:["ডিম সিদ্ধ করে কেটে নিন।","এক চামচ তেলে পেঁয়াজ-সবজি নেড়ে মশলা দিন।","ডিম মিশিয়ে ৩ মিনিট রাখুন।"]},
+{g:"d",n:"ছোলা-শসা সালাদ",q:"সিদ্ধ ছোলা ১/২ কাপ, শসা ১টি, পেঁয়াজ, লেবু, লবণ",t:"১০ মিনিট",k:160,x:"পেট ভরে, সুগার ধীরে বাড়ায়",s:["ছোলা সিদ্ধ করে ঠান্ডা করুন।","শসা-পেঁয়াজ কুচি মিশিয়ে লেবু-লবণ দিন।"]},
+{g:"h",n:"লেবু-রসুন মাছ সেদ্ধ",q:"মাছ ২ টুকরা, রসুন ৩ কোয়া, লেবু ১/২, হলুদ, সামান্য লবণ",t:"২০ মিনিট",k:200,x:"কম লবণ",s:["মাছে লেবুর রস, রসুন বাটা, হলুদ মাখুন।","কলাপাতা বা ঢাকনা দিয়ে ভাপে ১৫ মিনিট সেদ্ধ করুন।"]},
+{g:"h",n:"কম লবণের সবজি স্যুপ",q:"গাজর, বাঁধাকপি, টমেটো, আদা, গোলমরিচ, সামান্য লবণ",t:"২০ মিনিট",k:110,x:"লবণের বদলে গোলমরিচ-লেবু",s:["সবজি কুচি করে পানিতে সিদ্ধ করুন।","গোলমরিচ ও সামান্য লবণ দিয়ে নামান।"]},
+{g:"h",n:"ফল-দই বাটি",q:"টক দই ১ কাপ, আপেল-কলা কুচি ১/২ কাপ",t:"৫ মিনিট",k:170,x:"চিনি ছাড়া",s:["দইয়ের সাথে ফল মিশিয়ে ঠান্ডা করে খান।"]},
+{g:"k",n:"লাউ তরকারি (কম লবণ)",q:"লাউ ২ কাপ, পেঁয়াজ ১/২, হলুদ, সামান্য লবণ",t:"২০ মিনিট",k:90,x:"কম পটাশিয়াম",s:["লাউ কেটে ধুয়ে নিন।","অল্প তেলে পেঁয়াজ নেড়ে লাউ ও হলুদ দিন।","ঢেকে নরম হলে নামান।"]},
+{g:"k",n:"ডিমের সাদা অংশের ওমলেট",q:"ডিমের সাদা অংশ ২টি, পেঁয়াজ কুচি, গোলমরিচ",t:"১০ মিনিট",k:100,x:"প্রোটিনের পরিমাণ ডাক্তারের নির্দেশমতো",s:["সাদা অংশ ফেটিয়ে পেঁয়াজ-গোলমরিচ মেশান।","অল্প তেলে দুই পাশ ভেজে নিন।"]},
+{g:"k",n:"বাঁধাকপি-গাজর ভাজি",q:"বাঁধাকপি ১ কাপ, গাজর ১টি, সামান্য লবণ",t:"১৫ মিনিট",k:100,x:"কম লবণে",s:["সবজি কুচি করুন।","অল্প তেলে নেড়ে ঢেকে নরম করুন।"]},
+{g:"c",n:"ওটস-ফল বাটি",q:"ওটস ১/২ কাপ, পানি/কম চর্বির দুধ, আপেল বা কলা",t:"১০ মিনিট",k:230,x:"তন্তু বেশি",s:["ওটস পানি বা দুধে ৫ মিনিট ফুটান।","ফলের টুকরা দিয়ে খান।"]},
+{g:"c",n:"মাছ-সবজি ভাপা",q:"মাছ ২ টুকরা, গাজর, বিন, ১ চা-চামচ সরিষার তেল",t:"২৫ মিনিট",k:220,x:"অল্প তেল",s:["মাছে লবণ-হলুদ ও এক চামচ তেল মাখুন।","সবজি সহ ঢেকে ভাপে ১৫–২০ মিনিট রান্না করুন।"]},
+{g:"c",n:"মুগ ডাল-পালং",q:"মুগ ডাল ১/২ কাপ, পালং ১ আঁটি, রসুন, হলুদ",t:"২৫ মিনিট",k:170,x:"কম চর্বি",s:["ডাল সিদ্ধ করুন, পালং দিয়ে ফুটান।","রসুন ফোড়ন দিন।"]},
+{g:"g",n:"দই-ওটস-ফল",q:"কম চর্বির দই ১ কাপ, ওটস ৩ চামচ, কমলা বা আপেল",t:"৫ মিনিট",k:200,x:"ইউরিক এসিডের জন্য নিরাপদ",s:["ওটস দইয়ে ভিজিয়ে ফল মিশিয়ে খান।"]},
+{g:"g",n:"কুমড়া-লাউয়ের সবজি",q:"মিষ্টি কুমড়া ১ কাপ, লাউ ১ কাপ, আদা, হলুদ",t:"২০ মিনিট",k:100,x:"প্রচুর পানি পান করুন",s:["সবজি কেটে আদা-হলুদ দিয়ে সিদ্ধ করুন।","অল্প তেল ও লবণে নেড়ে নামান।"]},
+{g:"g",n:"সবজি ডিম পোচ",q:"ডিম ২টি, পালং ১/২ কাপ, গোলমরিচ",t:"১০ মিনিট",k:180,x:"ডিম নিরাপদ, মাংস নয়",s:["পালং হালকা সেদ্ধ করুন।","ডিম পানিতে পোচ করে পালংয়ের ওপর দিন।"]}
+];
+let diet=null;
+function renderDiet(){
+  const g=$("dietGrid");g.innerHTML="";
+  Object.keys(DIETS).forEach(k=>{const d=DIETS[k],b=document.createElement("button");b.className="tile";b.setAttribute("aria-pressed",diet===k);b.innerHTML=`<span>${d.e}</span>${d.n}`;b.onclick=()=>{diet=diet===k?null:k;renderDiet()};g.appendChild(b)});
+  const box=$("dietBox");box.innerHTML="";if(!diet)return;const d=DIETS[diet];
+  box.innerHTML=`<div class="card"><b>${d.e} ${d.n}: খাবারের নির্দেশিকা</b><p>✅ <b>খেতে পারেন:</b> ${d.ok}</p><p class="warn">⛔ <b>এড়ান বা কম খান:</b> ${d.no}</p><p>💡 ${d.tip}</p><p class="sub">এটি সাধারণ তথ্য। ডাক্তারের পরামর্শ সবসময় আগে।</p></div>`;
+  SR.filter(r=>r.g===diet).forEach(r=>{const c=document.createElement("div");c.className="card";
+    c.innerHTML=`<div class="row"><p class="rname">${r.n}</p><span class="kcal">${bn(r.k)} kcal</span></div><p class="have">উপকরণ: ${r.q}</p><p class="sub">⏱ ${r.t} · ${r.x}</p><details><summary>রান্নার ধাপ</summary><ol>${r.s.map(x=>"<li>"+x+"</li>").join("")}</ol></details>`;
+    const b=document.createElement("button");b.className="btn small";b.style.marginTop="10px";b.textContent="খেয়েছি, ক্যালোরি যোগ করুন";b.onclick=()=>{addEntry(r.n,r.k);toast("যোগ হয়েছে")};c.appendChild(b);box.appendChild(c)});
+}
+renderDiet();renderChips();renderRecipes();renderCal();tab("home");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
